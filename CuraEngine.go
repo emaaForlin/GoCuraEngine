@@ -89,7 +89,7 @@ func LoadFile(jsonFilePath string) Config {
   p := Config{}
   e := json.Unmarshal([]byte(jsonData), &p)
   if e != nil {
-      return 
+      return
   }
     return p
 }
