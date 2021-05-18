@@ -3,6 +3,8 @@ package CuraEngine
 import (
     "strconv"
     "os/exec"
+    "io/ioutil"
+    "encoding/json"
     "bytes"
     "fmt"
     "log"
@@ -76,6 +78,20 @@ type Params struct {
   SupportEnable string
   SupportTreeEnable string
   AdhesionType string
+}
+
+
+func LoadFile(jsonFilePath string) Config {
+  jsonData, err := ioutil.ReadFile(jsonFilePath)
+  if err != nil {
+    log.Fatal(err)
+  }
+  p := Config{}
+  e := json.Unmarshal([]byte(jsonData), &p)
+  if e != nil {
+      return 
+  }
+    return p
 }
 
 func ParseData(config Config, id int32) Params {
