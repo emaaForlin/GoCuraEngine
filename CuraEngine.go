@@ -81,10 +81,10 @@ type Params struct {
 }
 
 
-func LoadFile(jsonFilePath string) Config {
+func LoadFile(jsonFilePath string) (Config, error) {
   jsonData, err := ioutil.ReadFile(jsonFilePath)
   if err != nil {
-    log.Fatal(err)
+    return err
   }
   p := Config{}
   e := json.Unmarshal([]byte(jsonData), &p)
