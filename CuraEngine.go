@@ -15,7 +15,7 @@ type Config struct {
     Printer string `json`
     MachineNozzleSize float64 `json`
     MaterialDiameter float64 `json`
-    ExtruderNr int64 `json`
+    ExtruderNr int `json`
     LayerHeight float64 `json`
     Layer0Height float64 `json`
     LineWidth float64 `json`
