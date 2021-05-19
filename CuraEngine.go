@@ -138,7 +138,7 @@ func ParseData(config Config, id int32) Params {
 }
 
 func Slice(p Params, model string, output string){
-  cmd := exec.Command("CuraEngine", "slice", "-v", "-p", "-j", p.Printer, "-s", "machine_extruder_cooling_fan_number="+p.MachineExtruderCoolingFanNumber, "-s", "support_tree_enable="+p.SupportTreeEnable, "-s", "spaghetti_infill_enabled=false", "-s", "extruder_nr="+p.ExtruderNr, "-l", model, "-o", output)
+  cmd := exec.Command("CuraEngine", "slice", "-v", "-p", "-j", p.Printer, "-s" "machine_extruder_start_code=start.gcode", "-s", "machine_extruder_cooling_fan_number="+p.MachineExtruderCoolingFanNumber, "-s", "support_tree_enable="+p.SupportTreeEnable, "-s", "spaghetti_infill_enabled=false", "-s", "extruder_nr="+p.ExtruderNr, "-l", model, "-o", output)
   var out bytes.Buffer
   var stderr bytes.Buffer
   cmd.Stdout = &out
