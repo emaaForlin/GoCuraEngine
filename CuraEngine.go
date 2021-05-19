@@ -104,7 +104,7 @@ func ParseData(config Config, id int32) Params {
   p.MachineNozzleSize = strconv.FormatFloat(config.Preset[id].MachineNozzleSize, 'G', -1, 64)
   p.MaterialDiameter = strconv.FormatFloat(config.Preset[id].MaterialDiameter, 'G', -1, 64)
   p.ExtruderNr = strconv.Itoa(config.Preset[id].ExtruderNr)
-  p.MachineExtruderCoolingFanNumber = strconv.Itoa(config.Preset[id.MachineExtruderCoolingFanNumber])
+  p.MachineExtruderCoolingFanNumber = strconv.Itoa(config.Preset[id].MachineExtruderCoolingFanNumber)
   p.LayerHeight = strconv.FormatFloat(config.Preset[id].LayerHeight, 'G', -1, 64)
   p.Layer0Height = strconv.FormatFloat(config.Preset[id].Layer0Height, 'G', -1, 64)
   p.LineWidth = strconv.FormatFloat(config.Preset[id].LineWidth, 'G', -1, 64)
