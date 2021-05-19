@@ -16,6 +16,7 @@ type Config struct {
     MachineNozzleSize float64 `json`
     MaterialDiameter float64 `json`
     ExtruderNr int `json`
+    MachineExtruderCoolingFanNumber int `json`
     LayerHeight float64 `json`
     Layer0Height float64 `json`
     LineWidth float64 `json`
@@ -52,6 +53,7 @@ type Params struct {
   MachineNozzleSize string
   MaterialDiameter string
   ExtruderNr string
+  MachineExtruderCoolingFanNumber string
   LayerHeight string
   Layer0Height string
   LineWidth string
@@ -102,6 +104,7 @@ func ParseData(config Config, id int32) Params {
   p.MachineNozzleSize = strconv.FormatFloat(config.Preset[id].MachineNozzleSize, 'G', -1, 64)
   p.MaterialDiameter = strconv.FormatFloat(config.Preset[id].MaterialDiameter, 'G', -1, 64)
   p.ExtruderNr = strconv.Itoa(config.Preset[id].ExtruderNr)
+  p.MachineExtruderCoolingFanNumber = strconv.Itoa(config.Preset[id.MachineExtruderCoolingFanNumber])
   p.LayerHeight = strconv.FormatFloat(config.Preset[id].LayerHeight, 'G', -1, 64)
   p.Layer0Height = strconv.FormatFloat(config.Preset[id].Layer0Height, 'G', -1, 64)
   p.LineWidth = strconv.FormatFloat(config.Preset[id].LineWidth, 'G', -1, 64)
@@ -135,7 +138,7 @@ func ParseData(config Config, id int32) Params {
 }
 
 func Slice(p Params, model string, output string){
-  cmd := exec.Command("CuraEngine", "slice", "-v", "-p", "-j", p.Printer, "-s", "support_tree_enable="+p.SupportTreeEnable, "-s", "spaghetti_infill_enabled=false", "-s", "extruder_nr="+p.ExtruderNr, "-l", model, "-o", output)
+  cmd := exec.Command("CuraEngine", "slice", "-v", "-p", "-j", p.Printer, "-s", "machine_extruder_cooling_fan_number="p.MachineExtruderCoolingFanNumber, "-s", "support_tree_enable="+p.SupportTreeEnable, "-s", "spaghetti_infill_enabled=false", "-s", "extruder_nr="+p.ExtruderNr, "-l", model, "-o", output)
   var out bytes.Buffer
   var stderr bytes.Buffer
   cmd.Stdout = &out
