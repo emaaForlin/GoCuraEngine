@@ -91,6 +91,7 @@ func LoadFile(jsonFilePath string) Config {
   if e != nil {
       log.Fatal(e)
   }
+    log.Println("File successfully loaded.")
     return p
 }
 
@@ -128,22 +129,23 @@ func ParseData(config Config, id int32) Params {
   p.SupportTreeEnable = strconv.FormatBool(config.Preset[id].SupportTreeEnable)
   p.AdhesionType = config.Preset[id].AdhesionType
 
+  log.Println("Successfully data parsing.")
   return p
 }
 
 func Slice(p Params, model string, output string){
   cmd := exec.Command("CuraEngine", "slice", "-p", "-j", p.Printer, "-s", "support_tree_enable="+p.SupportTreeEnable, "-s", "spaghetti_infill_enabled=false", "-s", "machine_nozzle_size="+p.MachineNozzleSize, "-s","material_diameter="+p.MaterialDiameter,"-s", "layer_height="+p.LayerHeight, "-s", "layer_height_0="+p.Layer0Height, "-s", "line_width="+p.LineWidth, "-s", "wall_line_width_x="+p.LineWidth, "-s", "wall_line_count="+p.WallLineCount, "-s", "optimize_wall_printing_order="+p.OptimizeWallPrintingOrder, "-s", "smooth_spiralized_contours="+p.SmoothEnable, "-s", "infill_sparse_density="+p.InfillDensity, "-s", "infill_pattern="+p.InfillPattern, "-s", "material_bed_temperature="+p.BedTemp, "-s", "material_print_temperature="+p.HotendTemp, "-s", "speed_print="+p.SpeedPrint, "-s", "speed_print_layer_0="+p.SpeedPrintLayer0, "-s", "speed_wall="+p.SpeedWall, "-s", "speed_topbottom="+p.SpeedTopBottom, "-s", "speed_travel="+p.SpeedTravel, "-s",  "retraction_enable="+p.RetractionEnable, "-s", "retraction_speed="+p.RetractionSpeed, "-s", "retraction_hop_enabled="+p.ZHopOnRetract, "-s", "travel_avoid_other_parts="+p.AvoidOthersOnTravel, "-s", "travel_avoid_supports="+p.AvoidSupportsOnTravel, "-s", "cool_fan_enabled="+p.CoollingFanEnable, "-s", "cool_fan_speed_min="+p.CoolFanSpeed, "-s", "support_enable="+p.SupportEnable, "-s", "adhesion_type="+p.AdhesionType, "-l", model,"-o", output)
 
-//  fmt.Print(cmd.String())
   var out bytes.Buffer
   var stderr bytes.Buffer
   cmd.Stdout = &out
   cmd.Stderr = &stderr
   err := cmd.Run()
   if err != nil {
-    fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+    log.Println(fmt.Sprint(err) + ": " + stderr.String())
     log.Fatal(err)
     return
   }
-  fmt.Println(out.String())
+  log.Println(out.String())
+  log.Println("Successfully model slicing!")
 }
