@@ -12,6 +12,7 @@ import (
 
 type Config struct {
   Preset []struct{
+    Prefix string `json`
     Printer string `json`
     MachineNozzleSize float64 `json`
     MaterialDiameter float64 `json`
@@ -27,6 +28,7 @@ type Config struct {
     BedTemp int `json`
     HotendTemp int `json`
     SpeedPrint float64 `json`
+    SpeedInfill float64 `json`
     SpeedPrintLayer0 float64 `json`
     SpeedWall float64 `json`
     SpeedTopBottom float64 `json`
@@ -47,6 +49,7 @@ type Config struct {
 }
 
 type Params struct {
+  Prefix string
   Printer string
   MachineNozzleSize string
   MaterialDiameter string
@@ -62,6 +65,7 @@ type Params struct {
   BedTemp string
   HotendTemp string
   SpeedPrint string
+  SpeedInfill string
   SpeedPrintLayer0 string
   SpeedWall string
   SpeedTopBottom string
@@ -97,6 +101,7 @@ func LoadFile(jsonFilePath string) Config {
 
 func ParseData(config Config, id int32) Params {
   var p Params
+  p.Prefix = config.Preset[id].Prefix
   p.Printer = config.Preset[id].Printer
   p.MachineNozzleSize = strconv.FormatFloat(config.Preset[id].MachineNozzleSize, 'G', -1, 64)
   p.MaterialDiameter = strconv.FormatFloat(config.Preset[id].MaterialDiameter, 'G', -1, 64)
@@ -112,6 +117,7 @@ func ParseData(config Config, id int32) Params {
   p.BedTemp = strconv.Itoa(config.Preset[id].BedTemp)
   p.HotendTemp = strconv.Itoa(config.Preset[id].HotendTemp)
   p.SpeedPrint = strconv.FormatFloat(config.Preset[id].SpeedPrint, 'G', -1, 64)
+  p.SpeedInfill = strconv.FormatFloat(config.Preset[id].SpeedInfill, 'G', -1, 64)
   p.SpeedPrintLayer0 = strconv.FormatFloat(config.Preset[id].SpeedPrintLayer0, 'G', -1, 64)
   p.SpeedWall = strconv.FormatFloat(config.Preset[id].SpeedWall, 'G', -1, 64)
   p.SpeedTopBottom = strconv.FormatFloat(config.Preset[id].SpeedTopBottom, 'G', -1, 64)
@@ -134,7 +140,7 @@ func ParseData(config Config, id int32) Params {
 }
 
 func Slice(p Params, model string, output string){
-  cmd := exec.Command("CuraEngine", "slice", "-p", "-j", p.Printer, "-s", "support_tree_enable="+p.SupportTreeEnable, "-s", "spaghetti_infill_enabled=false", "-s", "machine_nozzle_size="+p.MachineNozzleSize, "-s","material_diameter="+p.MaterialDiameter,"-s", "layer_height="+p.LayerHeight, "-s", "layer_height_0="+p.Layer0Height, "-s", "line_width="+p.LineWidth, "-s", "wall_line_width_x="+p.LineWidth, "-s", "wall_line_count="+p.WallLineCount, "-s", "optimize_wall_printing_order="+p.OptimizeWallPrintingOrder, "-s", "smooth_spiralized_contours="+p.SmoothEnable, "-s", "infill_sparse_density="+p.InfillDensity, "-s", "infill_pattern="+p.InfillPattern, "-s", "material_bed_temperature="+p.BedTemp, "-s", "material_print_temperature="+p.HotendTemp, "-s", "speed_print="+p.SpeedPrint, "-s", "speed_print_layer_0="+p.SpeedPrintLayer0, "-s", "speed_wall="+p.SpeedWall, "-s", "speed_topbottom="+p.SpeedTopBottom, "-s", "speed_travel="+p.SpeedTravel, "-s",  "retraction_enable="+p.RetractionEnable, "-s", "retraction_speed="+p.RetractionSpeed, "-s", "retraction_hop_enabled="+p.ZHopOnRetract, "-s", "travel_avoid_other_parts="+p.AvoidOthersOnTravel, "-s", "travel_avoid_supports="+p.AvoidSupportsOnTravel, "-s", "cool_fan_enabled="+p.CoollingFanEnable, "-s", "cool_fan_speed_min="+p.CoolFanSpeed, "-s", "support_enable="+p.SupportEnable, "-s", "adhesion_type="+p.AdhesionType, "-l", model,"-o", output)
+  cmd := exec.Command("CuraEngine", "slice", "-p", "-j", p.Printer, "-s", "support_tree_enable="+p.SupportTreeEnable, "-s", "spaghetti_infill_enabled=false", "-s", "machine_nozzle_size="+p.MachineNozzleSize, "-s","material_diameter="+p.MaterialDiameter,"-s", "layer_height="+p.LayerHeight, "-s", "layer_height_0="+p.Layer0Height, "-s", "line_width="+p.LineWidth, "-s", "wall_line_width_x="+p.LineWidth, "-s", "wall_line_count="+p.WallLineCount, "-s", "optimize_wall_printing_order="+p.OptimizeWallPrintingOrder, "-s", "smooth_spiralized_contours="+p.SmoothEnable, "-s", "infill_sparse_density="+p.InfillDensity, "-s", "infill_pattern="+p.InfillPattern, "-s", "material_bed_temperature="+p.BedTemp, "-s", "material_print_temperature="+p.HotendTemp, "-s", "speed_print="+p.SpeedPrint, "-s", "speed_infill="+p.SpeedInfill, "-s", "speed_print_layer_0="+p.SpeedPrintLayer0, "-s", "speed_wall="+p.SpeedWall, "-s", "speed_topbottom="+p.SpeedTopBottom, "-s", "speed_travel="+p.SpeedTravel, "-s",  "retraction_enable="+p.RetractionEnable, "-s", "retraction_speed="+p.RetractionSpeed, "-s", "retraction_hop_enabled="+p.ZHopOnRetract, "-s", "travel_avoid_other_parts="+p.AvoidOthersOnTravel, "-s", "travel_avoid_supports="+p.AvoidSupportsOnTravel, "-s", "cool_fan_enabled="+p.CoollingFanEnable, "-s", "cool_fan_speed_min="+p.CoolFanSpeed, "-s", "support_enable="+p.SupportEnable, "-s", "adhesion_type="+p.AdhesionType, "-l", model,"-o", output)
 
   var out bytes.Buffer
   var stderr bytes.Buffer
