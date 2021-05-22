@@ -49,7 +49,6 @@ type Config struct {
 }
 
 type Params struct {
-  Prefix string
   Printer string
   MachineNozzleSize string
   MaterialDiameter string
@@ -99,7 +98,7 @@ func LoadFile(jsonFilePath string) Config {
     return p
 }
 
-func ParseData(config Config, id int32) Params {
+func ParseData(config Config, id int) Params {
   var p Params
   p.Prefix = config.Preset[id].Prefix
   p.Printer = config.Preset[id].Printer
