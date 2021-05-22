@@ -100,7 +100,6 @@ func LoadFile(jsonFilePath string) Config {
 
 func ParseData(config Config, id int) Params {
   var p Params
-  p.Prefix = config.Preset[id].Prefix
   p.Printer = config.Preset[id].Printer
   p.MachineNozzleSize = strconv.FormatFloat(config.Preset[id].MachineNozzleSize, 'G', -1, 64)
   p.MaterialDiameter = strconv.FormatFloat(config.Preset[id].MaterialDiameter, 'G', -1, 64)
